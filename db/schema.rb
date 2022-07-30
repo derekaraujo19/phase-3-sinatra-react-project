@@ -14,33 +14,19 @@ ActiveRecord::Schema.define(version: 2022_07_24_103924) do
 
   create_table "albums", force: :cascade do |t|
     t.string "title"
-    t.datetime "release_date"
+    t.date "release_date"
     t.string "genre"
     t.string "spotify_link"
   end
 
-  create_table "artists", force: :cascade do |t|
-    t.string "name"
-  end
-
-  create_table "song_writers", force: :cascade do |t|
-    t.integer "song_id"
-    t.integer "writer_id"
-  end
-
   create_table "songs", force: :cascade do |t|
     t.string "name"
-    t.integer "artist_id"
+    t.string "artist"
     t.integer "album_id"
-    t.string "produced_by"
     t.string "spotify_link"
+    t.boolean "favorite"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-  end
-
-  create_table "writers", force: :cascade do |t|
-    t.string "first_name"
-    t.string "last_name"
   end
 
 end
