@@ -8,7 +8,7 @@ class ApplicationController < Sinatra::Base
   end
   get "/albums" do
     albums = Album.all
-    albums.to_json
+    albums.to_json(include: :songs)
   end
 
   # READ - Individual
@@ -24,8 +24,45 @@ class ApplicationController < Sinatra::Base
   end
 
   # CREATE(post) - All
+  post "/songs" do
+    song = Song.create(
+      name: params[:name],
+      artist: params[:artist],
+      album_id: params[:album_id],
+      spotify_link: params[:spotify_link],
+      favorite: params[:favorite]
+    )
+  end
+  post "/albums" do
+    album = Album.create(
+      title: params[:title],
+      release_date: params[:release_date],
+      genre: params[:genre],
+      spotify_link: params[:spotify_link]
+    )
+  end
 
   # UPDATE - Individual
+
+  patch "/songs/:id" do
+    song = Song.find(params[:id])
+    song.update(
+      name: params[:name],
+      artist: params[:artist],
+      album_id: params[:album_id],
+      spotify_link: params[:spotify_link],
+      favorite: params[:favorite]
+    )
+  end
+  patch "/albums/:id" do
+    album = Album.find(params[:id])
+    album.update(
+      title: params[:title],
+      release_date: params[:release_date],
+      genre: params[:genre],
+      spotify_link: params[:spotify_link]
+    )
+  end
 
   # Delete -
   delete "/songs/:id" do
