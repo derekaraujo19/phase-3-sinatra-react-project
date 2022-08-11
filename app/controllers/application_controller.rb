@@ -32,6 +32,7 @@ class ApplicationController < Sinatra::Base
       spotify_link: params[:spotify_link],
       favorite: params[:favorite]
     )
+    song.to_json
   end
   post "/albums" do
     album = Album.create(
@@ -40,6 +41,7 @@ class ApplicationController < Sinatra::Base
       genre: params[:genre],
       spotify_link: params[:spotify_link]
     )
+    album.to_json
   end
 
   # UPDATE - Individual
@@ -53,6 +55,7 @@ class ApplicationController < Sinatra::Base
       spotify_link: params[:spotify_link],
       favorite: params[:favorite]
     )
+    song.to_json
   end
   patch "/albums/:id" do
     album = Album.find(params[:id])
@@ -62,6 +65,7 @@ class ApplicationController < Sinatra::Base
       genre: params[:genre],
       spotify_link: params[:spotify_link]
     )
+    album.to_json
   end
 
   # Delete -
