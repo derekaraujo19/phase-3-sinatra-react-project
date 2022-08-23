@@ -25,16 +25,37 @@ class ApplicationController < Sinatra::Base
 
   # CREATE(post) - All
   post "/songs" do
-    song = Song.create(
+
+    new_song_options={
       name: params[:name],
       artist: params[:artist],
-      album_id: params[:album_id],
       spotify_link: params[:spotify_link],
       favorite: params[:favorite]
-    )
-    song.to_json
+    }
+
+    album_title = params[:album_title]
+    #the album title text entering the front end from the POST
+    album = Album.find_by title: album_title
+    #album that already exists in the DB
+
+    if album
+      new_song_options[:album_id] = album.id
+      # if it exists, setting it's id into the :album_id param in the new song entry
+    elsif album_title
+      #if it doesn't already exist but user is entering in a new title
+      album = Album.create(
+        title: album_title
+      )
+      new_song_options[:album_id] = album.id
+      # create an album with a new title and set that song's album_id to the new album.id
+    end
+
+    Song.create(new_song_options).to_json
+
   end
   post "/albums" do
+    # MUST REPEAT WHAT WE DID ABOVE
+
     album = Album.create(
       title: params[:title],
       release_date: params[:release_date],
