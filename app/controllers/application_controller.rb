@@ -41,7 +41,7 @@ class ApplicationController < Sinatra::Base
     if album
       new_song_options[:album_id] = album.id
       # if it exists, setting it's id into the :album_id param in the new song entry
-    elsif album_title
+    elsif album_title.length > 0
       #if it doesn't already exist but user is entering in a new title
       album = Album.create(
         title: album_title
