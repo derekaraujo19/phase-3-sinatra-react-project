@@ -10,11 +10,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_07_24_103924) do
+ActiveRecord::Schema.define(version: 2022_08_25_004508) do
 
   create_table "albums", force: :cascade do |t|
     t.string "title"
-    t.date "release_date"
+    t.string "release_date"
     t.string "genre"
     t.string "spotify_link"
   end
