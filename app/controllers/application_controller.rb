@@ -54,7 +54,6 @@ class ApplicationController < Sinatra::Base
 
   end
   post "/albums" do
-    # MUST REPEAT WHAT WE DID ABOVE
 
     album = Album.create(
       title: params[:title],
@@ -66,18 +65,29 @@ class ApplicationController < Sinatra::Base
   end
 
   # UPDATE - Individual
-
   patch "/songs/:id" do
     song = Song.find(params[:id])
-    song.update(
+    updated_song_options={
       name: params[:name],
       artist: params[:artist],
-      album_id: params[:album_id],
       spotify_link: params[:spotify_link],
       favorite: params[:favorite]
-    )
-    song.to_json
+    }
+    album_title = params[:album_title]
+    #the album title text entering the front end from the PATCH
+    album = Album.find_by title: album_title
+    #album that already exists in the DB
+    if album
+      updated_song_options[:album_id] = album.id
+    elsif album_title.length > 0
+      album = Album.create(
+        title: album_title
+      )
+      updated_song_options[:album_id] = album.id
+    end
+    song.update(updated_song_options).to_json
   end
+
   patch "/albums/:id" do
     album = Album.find(params[:id])
     album.update(
