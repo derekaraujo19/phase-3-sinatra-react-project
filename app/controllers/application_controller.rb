@@ -80,9 +80,12 @@ class ApplicationController < Sinatra::Base
     if album
       updated_song_options[:album_id] = album.id
     elsif album_title.length > 0
+      # puts "Creating Album = #{album_title}"
+
       album = Album.create(
         title: album_title
       )
+      # puts "Album ID =  #{album.id}"
       updated_song_options[:album_id] = album.id
     end
     song.update(updated_song_options).to_json
