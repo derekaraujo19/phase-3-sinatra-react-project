@@ -13,9 +13,7 @@ class ApplicationController < Sinatra::Base
 
   # READ - Individual
   get "/songs/:id" do
-    # look up the song in the database using its ID
     song = Song.find(params[:id])
-    # send a JSON-formatted response of the game data
     song.to_json(include: :album)
   end
   get "/albums/:id" do
@@ -32,27 +30,26 @@ class ApplicationController < Sinatra::Base
       spotify_link: params[:spotify_link],
       favorite: params[:favorite]
     }
-
-    album_title = params[:album_title]
     #the album title text entering the front end from the POST
-    album = Album.find_by title: album_title
+    album_title = params[:album_title]
     #album that already exists in the DB
+    album = Album.find_by title: album_title
 
+    # if it exists
     if album
+    # setting its id into the :album_id param in the new song entry
       new_song_options[:album_id] = album.id
-      # if it exists, setting it's id into the :album_id param in the new song entry
+    #if it doesn't already exist but user is entering in a new title
     elsif album_title.length > 0
-      #if it doesn't already exist but user is entering in a new title
+    # create an album with a new title and set that song's album_id to the new album.id
       album = Album.create(
         title: album_title
       )
       new_song_options[:album_id] = album.id
-      # create an album with a new title and set that song's album_id to the new album.id
     end
-
     Song.create(new_song_options).to_json
-
   end
+
   post "/albums" do
 
     album = Album.create(
@@ -66,6 +63,7 @@ class ApplicationController < Sinatra::Base
 
   # UPDATE - Individual
   patch "/songs/:id" do
+
     song = Song.find(params[:id])
     updated_song_options={
       name: params[:name],
@@ -73,15 +71,15 @@ class ApplicationController < Sinatra::Base
       spotify_link: params[:spotify_link],
       favorite: params[:favorite]
     }
-    album_title = params[:album_title]
     #the album title text entering the front end from the PATCH
-    album = Album.find_by title: album_title
+    album_title = params[:album_title]
     #album that already exists in the DB
+    album = Album.find_by title: album_title
+
     if album
       updated_song_options[:album_id] = album.id
     elsif album_title.length > 0
       # puts "Creating Album = #{album_title}"
-
       album = Album.create(
         title: album_title
       )
@@ -102,7 +100,7 @@ class ApplicationController < Sinatra::Base
     album.to_json
   end
 
-  # Delete -
+  # DELETE
   delete "/songs/:id" do
     # find the song using the ID
     song = Song.find(params[:id])
